@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="ug" dir="rtl" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تۈركىستان ئاشخانىسى | Turkistan Restaurant - رەقەملىك تىزىملىك</title>
+    <style>
+        /* ==========================================================================
+           ئاساسىي ئۆزگەرگۈچى مىقدارلار ۋە رەڭ سىستېمىسى
+           ========================================================================== */
+        :root {
+            --font-uyghur: 'UKIJ Tuz', 'ALKATIP Basma', 'Uyghur Pashto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif;
+            --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --accent-gold: #d4af37;
+            --accent-amber: #f59e0b;
+            --accent-crimson: #991b1b;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #090a0f;
+            --bg-secondary: #12131c;
+            --bg-orb-1: rgba(212, 175, 55, 0.14);
+            --bg-orb-2: rgba(153, 27, 27, 0.16);
+            --glass-bg: rgba(255, 255, 255, 0.035);
+            --glass-bg-hover: rgba(255, 255, 255, 0.07);
+            --glass-border: rgba(255, 255, 255, 0.09);
+            --glass-border-hover: rgba(212, 175, 55, 0.45);
+            --glass-modal: rgba(16, 18, 27, 0.82);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --card-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.65);
+            --badge-bg: rgba(212, 175, 55, 0.15);
+            --badge-text: #fbbf24;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #f1f5f9;
+            --bg-orb-1: rgba(212, 175, 55, 0.18);
+            --bg-orb-2: rgba(185, 28, 28, 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.68);
+            --glass-bg-hover: rgba(255, 255, 255, 0.92);
+            --glass-border: rgba(15, 23, 42, 0.08);
+            --glass-border-hover: rgba(180, 130, 20, 0.5);
+            --glass-modal: rgba(255, 255, 255, 0.88);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --card-shadow: 0 20px 35px -10px rgba(15, 23, 42, 0.07);
+            --badge-bg: rgba(180, 130, 20, 0.12);
+            --badge-text: #92400e;
+        }
+
+        /* ==========================================================================
+           ئۇيغۇرچە مەتبەئە ۋە قۇرۇلما قائىدىلىرى
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-uyghur);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            direction: rtl;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            transition: background-color 0.5s var(--transition-smooth), color 0.5s var(--transition-smooth);
+            line-height: 1.8;
+        }
+
+        p.uyghur-paragraph {
+            text-align: justify;
+            text-justify: inter-word;
+            text-indent: 1.8em;
+            line-height: 1.95;
+            color: var(--text-secondary);
+            font-size: 1.02rem;
+            margin-bottom: 1rem;
+        }
+
+        /* ==========================================================================
+           تەگلىك نۇر دائىرىلىرى
+           ========================================================================== */
+        .ambient-canvas {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(110px);
+            transition: background 0.6s ease;
+        }
+
+        .orb-1 {
+            width: 550px;
+            height: 550px;
+            background: var(--bg-orb-1);
+            top: -150px;
+            right: -100px;
+            animation: floatOrb 18s infinite alternate ease-in-out;
+        }
+
+        .orb-2 {
+            width: 600px;
+            height: 600px;
+            background: var(--bg-orb-2);
+            bottom: -200px;
+            left: -150px;
+            animation: floatOrb 22s infinite alternate-reverse ease-in-out;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-40px, 50px) scale(1.12); }
+        }
+
+        /* ==========================================================================
+           ئۈستى تىزىملىك بالدىقى
+           ========================================================================== */
+        header.navbar {
+            position: sticky;
+            top: 1.25rem;
+            z-index: 40;
+            max-width: 1320px;
+            margin: 1.25rem auto 0;
+            padding: 0.85rem 1.75rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--card-shadow);
+            transition: all 0.4s var(--transition-smooth);
+        }
+
+        @media (max-width: 1360px) {
+            header.navbar {
+                margin: 1rem 1.25rem 0;
+            }
+        }
+
+        .brand-identity {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .brand-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--accent-crimson), #450a0a);
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(153, 27, 27, 0.35);
+            flex-shrink: 0;
+        }
+
+        .brand-logo svg {
+            width: 28px;
+            height: 28px;
+            fill: var(--accent-gold);
+        }
+
+        .brand-titles h1 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .brand-titles span.sub-en {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            display: block;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .search-wrapper {
+            position: relative;
+            width: 260px;
+        }
+
+        @media (max-width: 768px) {
+            .search-wrapper {
+                display: none;
+            }
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.65rem 2.6rem 0.65rem 1rem;
+            border-radius: 14px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s var(--transition-smooth);
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-gold);
+            background: var(--glass-bg-hover);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 0.85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        .theme-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.25s var(--transition-bounce), border-color 0.3s ease, background 0.3s ease;
+        }
+
+        .theme-btn:hover {
+            border-color: var(--glass-border-hover);
+            background: var(--glass-bg-hover);
+            transform: translateY(-2px);
+        }
+
+        .theme-btn:active {
+            transform: scale(0.92);
+        }
+
+        /* ==========================================================================
+           باش بەت تونۇشتۇرۇش بۆلىكى
+           ========================================================================== */
+        .hero-section {
+            position: relative;
+            z-index: 10;
+            max-width: 1320px;
+            margin: 2.5rem auto 1.5rem;
+            padding: 0 1.25rem;
+        }
+
+        .hero-banner {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 2.5rem 3rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+
+        @media (max-width: 640px) {
+            .hero-banner {
+                padding: 1.75rem 1.35rem;
+            }
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.95rem;
+            border-radius: 999px;
+            background: var(--badge-bg);
+            color: var(--badge-text);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(212, 175, 55, 0.25);
+        }
+
+        .hero-title {
+            font-size: clamp(1.8rem, 3.5vw, 2.75rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--text-primary), var(--accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ==========================================================================
+           تۈر سۈزگۈچ كونۇپكىلىرى
+           ========================================================================== */
+        .filter-bar {
+            position: relative;
+            z-index: 10;
+            max-width: 1320px;
+            margin: 0 auto 2rem;
+            padding: 0 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .category-tabs {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            overflow-x: auto;
+            padding-bottom: 0.35rem;
+            scrollbar-width: none;
+        }
+
+        .category-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .cat-btn {
+            padding: 0.6rem 1.25rem;
+            border-radius: 14px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cat-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--glass-border-hover);
+            transform: translateY(-2px);
+        }
+
+        .cat-btn:active {
+            transform: scale(0.95);
+        }
+
+        .cat-btn.active {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.22), rgba(153, 27, 27, 0.25));
+            color: var(--text-primary);
+            border-color: var(--accent-gold);
+            box-shadow: 0 8px 20px -6px rgba(212, 175, 55, 0.35);
+        }
+
+        .cat-count {
+            font-size: 0.78rem;
+            padding: 0.1rem 0.45rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+        }
+
+        .mobile-search {
+            display: none;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-search {
+                display: block;
+            }
+        }
+
+        /* ==========================================================================
+           تاماق كارتىلىرى تىزىملىكى
+           ========================================================================== */
+        .menu-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1320px;
+            margin: 0 auto 5rem;
+            padding: 0 1.25rem;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(295px, 1fr));
+            gap: 1.6rem;
+        }
+
+        .dish-card {
+            position: relative;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(160%);
+            -webkit-backdrop-filter: blur(20px) saturate(160%);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            overflow: hidden;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.45s var(--transition-smooth), border-color 0.4s ease, background 0.4s ease;
+            --mouse-x: 50%;
+            --mouse-y: 50%;
+        }
+
+        .dish-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+                500px circle at var(--mouse-x) var(--mouse-y),
+                rgba(212, 175, 55, 0.14),
+                transparent 40%
+            );
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .dish-card:hover {
+            transform: translateY(-7px);
+            border-color: var(--glass-border-hover);
+            background: var(--glass-bg-hover);
+        }
+
+        .dish-card:hover::before {
+            opacity: 1;
+        }
+
+        .dish-card:active {
+            transform: scale(0.975);
+        }
+
+        .dish-visual {
+            position: relative;
+            height: 215px;
+            width: 100%;
+            overflow: hidden;
+            background: #181824;
+        }
+
+        .dish-visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s var(--transition-smooth);
+        }
+
+        .dish-card:hover .dish-visual img {
+            transform: scale(1.08);
+        }
+
+        .page-badge {
+            position: absolute;
+            top: 0.9rem;
+            right: 0.9rem;
+            z-index: 3;
+            padding: 0.28rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            background: rgba(9, 10, 15, 0.68);
+            backdrop-filter: blur(12px);
+            color: #f8fafc;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .category-tag {
+            position: absolute;
+            bottom: 0.85rem;
+            left: 0.85rem;
+            z-index: 3;
+            padding: 0.25rem 0.75rem;
+            border-radius: 10px;
+            font-size: 0.78rem;
+            background: rgba(212, 175, 55, 0.88);
+            color: #090a0f;
+            font-weight: 700;
+        }
+
+        .dish-body {
+            padding: 1.35rem 1.4rem 1.45rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            position: relative;
+            z-index: 3;
+        }
+
+        .dish-names {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .dish-title-ug {
+            font-size: 1.32rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .dish-title-tr {
+            font-size: 0.86rem;
+            color: var(--accent-gold);
+            font-weight: 500;
+            direction: ltr;
+            text-align: left;
+            margin-top: 0.15rem;
+        }
+
+        .dish-excerpt {
+            text-align: justify;
+            text-justify: inter-word;
+            text-indent: 1.6em;
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            line-height: 1.75;
+            margin-bottom: 1.25rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .dish-footer {
+            margin-top: auto;
+            padding-top: 0.9rem;
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.86rem;
+            color: var(--text-secondary);
+        }
+
+        .detail-trigger {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--accent-gold);
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+
+        .dish-card:hover .detail-trigger {
+            transform: translateX(-4px);
+        }
+
+        /* ==========================================================================
+           تاماق تەپسىلاتى كۆزنىكى
+           ========================================================================== */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(5, 6, 10, 0.72);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s var(--transition-smooth);
+        }
+
+        .modal-backdrop.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-dialog {
+            width: 100%;
+            max-width: 780px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: var(--glass-modal);
+            backdrop-filter: blur(30px) saturate(190%);
+            -webkit-backdrop-filter: blur(30px) saturate(190%);
+            border: 1px solid var(--glass-border-hover);
+            border-radius: 28px;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.75);
+            transform: translateY(30px) scale(0.95);
+            transition: transform 0.45s var(--transition-bounce);
+            position: relative;
+        }
+
+        .modal-backdrop.open .modal-dialog {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-hero {
+            position: relative;
+            height: 310px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        @media (max-width: 600px) {
+            .modal-hero {
+                height: 230px;
+            }
+        }
+
+        .modal-hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(9, 10, 15, 0.92) 5%, transparent 65%);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.2rem;
+            left: 1.2rem;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: transform 0.25s var(--transition-bounce), background 0.25s ease;
+            z-index: 5;
+        }
+
+        .modal-close:hover {
+            background: var(--accent-crimson);
+            transform: rotate(90deg) scale(1.08);
+        }
+
+        .modal-header-info {
+            position: absolute;
+            bottom: 1.35rem;
+            right: 1.75rem;
+            left: 1.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .modal-title-ug {
+            font-size: 1.9rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-title-tr {
+            font-size: 1.05rem;
+            color: var(--accent-gold);
+            font-weight: 600;
+            direction: ltr;
+        }
+
+        .modal-content {
+            padding: 1.85rem 2rem 2.2rem;
+        }
+
+        @media (max-width: 600px) {
+            .modal-content {
+                padding: 1.35rem;
+            }
+        }
+
+        .meta-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.85rem;
+            margin-bottom: 1.65rem;
+        }
+
+        .stat-box {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 0.85rem 1rem;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .stat-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin: 1.35rem 0 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ingredients-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 0.6rem;
+        }
+
+        .ingredient-pill {
+            padding: 0.45rem 0.95rem;
+            border-radius: 12px;
+            background: var(--badge-bg);
+            color: var(--badge-text);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* ==========================================================================
+           ئاستى قىسىم (Footer)
+           ========================================================================== */
+        footer {
+            position: relative;
+            z-index: 10;
+            max-width: 1320px;
+            margin: 0 auto 2.5rem;
+            padding: 0 1.25rem;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .footer-glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Light Orbs -->
+    <div class="ambient-canvas">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <!-- Sticky Glass Navigation -->
+    <header class="navbar">
+        <div class="brand-identity">
+            <div class="brand-logo" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 10c0-3.87-3.13-7-7-7s-7 3.13-7 7H3c0 4.42 3.58 8 8 8v3h2v-3c4.42 0 8-3.58 8-8h-2zm-7-5c2.76 0 5 2.24 5 5H7c0-2.76 2.24-5 5-5z"/>
+                </svg>
+            </div>
+            <div class="brand-titles">
+                <h1>مطعم تركستان | تۈركىستان ئاشخانىسى</h1>
+                <span class="sub-en">TURKISTAN RESTAURANT • FINE UYGHUR CUISINE</span>
+            </div>
+        </div>
+
+        <div class="nav-controls">
+            <div class="search-wrapper">
+                <input type="text" id="desktopSearch" class="search-input" placeholder="تاماق ئىسمىنى ئىزدەڭ...">
+                <svg class="search-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </div>
+
+            <button class="theme-btn" id="themeToggle" title="تېما ئالماشتۇرۇش (كېچە / كۈندۈز)">
+                <svg id="themeIcon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Introduction -->
+    <section class="hero-section">
+        <div class="hero-banner">
+            <div class="hero-badge">✦ ئەنئەنىۋى تەم ۋە زامانىۋى مۇلازىمەت</div>
+            <h2 class="hero-title">تۈركىستان ئاشخانىسى خىل تاماقلار تىزىملىكى</h2>
+            <p class="uyghur-paragraph">
+                ئاشخانىمىز سىزگە ئەڭ ساپ، تەبىئىي يېمەكلىك ماتېرىياللىرى بىلەن ئەنئەنىۋى ئۇيغۇر ئاشپەزلىك سەنئىتىنىڭ جەۋھەرلىرىنى تەقدىم ئېتىدۇ. قولدا سوزۇلغان يىپەكتەك لەغمەنلەردىن تارتىپ، خۇشپۇراق سومەن، مانتا، كاۋاپ ۋە مەززىلىك شورپىلارغىچە بولغان بارلىق تائاملار پىشقان ئۇستاملار تەرىپىدىن كۆڭۈل قويۇپ تەييارلىنىدۇ. تۆۋەندىكى تىزىملىكتىن خالىغان تاماقنى چېكىپ، ئۇنىڭ تەركىبى ۋە تەپسىلىي چۈشەندۈرۈلۈشى بىلەن تونۇشۇپ چىقالايسىز.
+            </p>
+        </div>
+    </section>
+
+    <!-- Filter & Mobile Search Bar -->
+    <section class="filter-bar">
+        <div class="category-tabs" id="categoryTabs">
+            <button class="cat-btn active" data-category="all">بارلىق تاماقلار <span class="cat-count">24</span></button>
+            <button class="cat-btn" data-category="laghman">لەغمەنلەر <span class="cat-count">6</span></button>
+            <button class="cat-btn" data-category="somen">سومەن ۋە چۆپلەر <span class="cat-count">4</span></button>
+            <button class="cat-btn" data-category="manta">مانتا ۋە گۆشنان <span class="cat-count">3</span></button>
+            <button class="cat-btn" data-category="soup">سۇيۇق تاماقلار <span class="cat-count">3</span></button>
+            <button class="cat-btn" data-category="roast">پولۇ، كاۋاپ ۋە قورۇمىلار <span class="cat-count">4</span></button>
+            <button class="cat-btn" data-category="side">سالات، نان ۋە چاي <span class="cat-count">4</span></button>
+        </div>
+
+        <div class="mobile-search">
+            <input type="text" id="mobileSearch" class="search-input" placeholder="تاماق ئىسمىنى ئىزدەڭ (ئۇيغۇرچە / تۈركچە)...">
+        </div>
+    </section>
+
+    <!-- Main Dish Grid -->
+    <main class="menu-container">
+        <div class="menu-grid" id="menuGrid"></div>
+    </main>
+
+    <!-- Interactive Detail Modal -->
+    <div class="modal-backdrop" id="dishModal" role="dialog" aria-modal="true">
+        <div class="modal-dialog" id="modalDialog">
+            <div class="modal-hero">
+                <button class="modal-close" id="closeModal" aria-label="تاقاش">✕</button>
+                <img id="modalImg" src="" alt="">
+                <div class="modal-hero-overlay"></div>
+                <div class="modal-header-info">
+                    <div>
+                        <h3 class="modal-title-ug" id="modalTitleUg"></h3>
+                        <div class="modal-title-tr" id="modalTitleTr"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-content">
+                <div class="meta-stats">
+                    <div class="stat-box">
+                        <span class="stat-label">تەييارلاش ۋاقتى</span>
+                        <span class="stat-value" id="modalTime"></span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">تەم ئالاھىدىلىكى</span>
+                        <span class="stat-value" id="modalFlavor"></span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">تىزىملىك بەت نومۇرى</span>
+                        <span class="stat-value" id="modalPage"></span>
+                    </div>
+                </div>
+
+                <div class="section-subtitle">✦ تاماق ھەققىدە تەپسىلات</div>
+                <p class="uyghur-paragraph" id="modalDesc1"></p>
+                <p class="uyghur-paragraph" id="modalDesc2"></p>
+
+                <div class="section-subtitle">✦ ئاساسلىق خۇرۇچلار</div>
+                <div class="ingredients-list" id="modalIngredients"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-glass">
+            تۈركىستان ئاشخانىسى (Turkistan Restaurant) • بارلىق ھوقۇق قوغدالغان © 2026
+        </div>
+    </footer>
+
+    <script>
+        /* ==========================================================================
+           يەرلىك (Local) رەسىم ئىسىملىرى ۋە تاماقلار مەلۇمات ئامبىرى
+           ========================================================================== */
+        const dishesData = [
+            // ================= 1-بەتتىكى تاماقلار =================
+            {
+                id: 1,
+                page: "1-بەت",
+                category: "laghman",
+                categoryName: "لەغمەنلەر",
+                nameUg: "گويۇر لەغمەن",
+                nameTr: "Özel Lağmen",
+                time: "15 - 20 مىنۇت",
+                flavor: "مەززىلىك / قورۇما",
+                image: "page1_dish_01.png",
+                desc1: "گويۇر لەغمەن ئۇيغۇر لەغمەن مەدەنىيىتىدىكى ئەڭ كىلاسسىك ۋە كۆپ ياقتۇرۇلىدىغان تۈرلەرنىڭ بىرى بولۇپ، يۇمشاق قوينىڭ لوق گۆشى يۇقىرى ئوتتا يېڭى كۆكتاتلار بىلەن تېز قورۇپ تەييارلىنىدۇ. قولدا پىششىق ئىشلەنگەن چۆپى ئىنتايىن سىلىق ۋە چاينايمىلىق بولۇپ، قورۇمىنىڭ قىيامى بىلەن ناھايىتى ياخشى بىرىكىدۇ.",
+                desc2: "بۇ تاماقنىڭ قورۇمىسىدا قىزىل ۋە يېشىل مۇچ، پەمىدۇر، سامساق ۋە مور قاتارلىق تەبىئىي خۇرۇچلار ئۆز تەمىنى يوقاتمىغان ھالەتتە پىشۇرۇلىدۇ. ھەم كۆرۈنۈشى كۆركەم، ھەم قۇۋۋەتلىك بولۇپ، چۈشلۈك ۋە كەچلىك غىزالىنىش ئۈچۈن ئەڭ ياخشى تاللاش ھېسابلىنىدۇ.",
+                ingredients: ["قولدا سوزۇلغان چۆپ", "قوينىڭ لوق گۆشى", "قىزىل-يېشىل مۇچ", "پەمىدۇر", "قارا مور", "سامساق"]
+            },
+            {
+                id: 2,
+                page: "1-بەت",
+                category: "laghman",
+                categoryName: "لەغمەنلەر",
+                nameUg: "ئۆي لەغمەن",
+                nameTr: "Ev Lağmen",
+                time: "15 - 20 مىنۇت",
+                flavor: "ئائىلىۋى خۇشپۇراق",
+                image: "page1_dish_02.png",
+                desc1: "ئۆي لەغمىنى ھەربىر ئۇيغۇر ئائىلىسىنىڭ ئىللىق داستىخىنىنى ئەسلىتىدىغان، يېڭى ۋە مول كۆكتاتلار بىلەن ئىنچىكە توغرالغان گۆشتىن تەييارلىنىدىغان ئالاھىدە لەغمەن تۈرىدۇر. ئۇنىڭ قىيامى قويۇق ۋە تەبىئىي پەمىدۇر سۈيى بىلەن تەڭشەلگەن بولۇپ، ئاشقازانغا يېنىك ۋە سىڭىشلىك كېلىدۇ.",
+                desc2: "تۈركىستان ئاشخانىسىنىڭ ئۆي لەغمىنىدە پەسىللىك يېڭى كۆكتاتلار ئىشلىتىلىپ، خۇددى ئۆيدە ئېتىلگەندەك ساپ ۋە يېقىملىق تەم بېرىدۇ. ئىسسىق چۆپ ئۈستىگە قۇيۇلغان مەززىلىك قورۇما كىشىگە ھەقىقىي ئانا يۇرت تەمىنى ھېس قىلدۇرىدۇ.",
+                ingredients: ["پىلتە چۆپ", "توغرالغان قوي گۆشى", "پەمىدۇر قىيامى", "كۆك مۇچ", "پىياز", "چىڭسەي"]
+            },
+            {
+                id: 3,
+                page: "1-بەت",
+                category: "laghman",
+                categoryName: "لەغمەنلەر",
+                nameUg: "سۇيرۇ لەغمەن",
+                nameTr: "Kıymall Lağmen",
+                time: "15 مىنۇت",
+                flavor: "قىيمىلىق / قويۇق",
+                image: "page1_dish_03.png",
+                desc1: "سۇيرۇ لەغمەن ئىنچىكە چانالغان يېڭى قوي گۆشى قىيمىسى بىلەن ئۇششاق توغرالغان كۆكتاتلارنىڭ بىرلىشىشىدىن ھاسىل بولغان ئالاھىدە لەغمەن تۈرىدۇر. قىيما قورۇما چۆپنىڭ ھەربىر تاللىرىغا تەكشى يېپىشىپ، ھەربىر كاپىمدا تولۇق ۋە باي تەم بېرىدۇ.",
+                desc2: "پەمىدۇر، پىياز ۋە تەم تەڭشىگۈچلەر بىلەن ئاستا ئوتتا قورۇلغان قىيما سەينىڭ شىرنىسى ئىنتايىن قويۇق بولۇپ، چۆپ بىلەن ئارىلاشتۇرۇلغاندا ئادەمنىڭ ئىشتىھاسىنى ئاچىدۇ.",
+                ingredients: ["قولدا سوزۇلغان چۆپ", "قوي گۆشى قىيمىسى", "پەمىدۇر", "باش پىياز", "قىزىل مۇچ", "سامساق"]
+            },
+            {
+                id: 4,
+                page: "1-بەت",
+                category: "laghman",
+                categoryName: "لەغمەنلەر",
+                nameUg: "جۈسەي لەغمەن",
+                nameTr: "Frenk Soğanı Lağmen",
+                time: "15 مىنۇت",
+                flavor: "كۆك جۈسەي پۇراقلىق",
+                image: "page1_dish_04.png",
+                desc1: "جۈسەي لەغمەن يېڭى كۆك جۈسەينىڭ ئۆزگىچە خۇشپۇرىقى بىلەن يۇمشاق گۆش ۋە پەمىدۇر قىيامىنى بىرلەشتۈرگەن ئەنئەنىۋى لەغمەندۇر. جۈسەينىڭ تەبىئىي تەمى قورۇمىغا ئالاھىدە يېڭىلىق ۋە مەززىلىك پۇراق بەخش ئېتىدۇ.",
+                desc2: "تەييارلاش جەريانىدا جۈسەينىڭ يېشىل رەڭگى ۋە چۈرۈكلۈكى ساقلاپ قېلىنىدىغان بولۇپ، ئاق ۋە سىلىق چۆپ ئۈستىدە كۆركەم رەڭ سېلىشتۇرمىسى شەكىللەندۈرىدۇ.",
+                ingredients: ["لەغمەن چۆپى", "يېڭى كۆك جۈسەي", "قوي گۆشى", "پەمىدۇر", "قىزىل مۇچ", "سامساق"]
+            },
+            {
+                id: 5,
+                page: "1-بەت",
+                category: "laghman",
+                categoryName: "لەغمەنلەر",
+                nameUg: "پالەك لەغمەن",
+                nameTr: "Ispanak Lağmen",
+                time: "15 - 20 مىنۇت",
+                flavor: "يېڭى پالەك / كەڭ چۆپ",
+                image: "page1_dish_05.png",
+                desc1: "پالەك لەغمەن كەڭرەك تارتىلغان يەلپۈگۈچ ياكى كەسمە شەكىللىك چۆپ ئۈستىگە يېڭى پالەك ۋە گۆش قورۇمىسىنى قۇيۇپ تەييارلىنىدىغان ئوزۇقلۇق قىممىتى يۇقىرى تائامدۇر. پالەك تەركىبىدىكى تۆمۈر ۋە ۋىتامىنلار گۆش بىلەن بىرلىشىپ، ساغلام ۋە مەززىلىك غىزا ھاسىل قىلىدۇ.",
+                desc2: "كەڭ چۆپنىڭ يۇمشاق ۋە ئېلاستىك تۇيغۇسى پالەك ۋە قىزىل مۇچ قورۇمىسى بىلەن ناھايىتى ياخشى ماسلىشىدىغان بولۇپ، ئۆزگىچە لەغمەن تەمى ئىزدىگۈچىلەر ئۈچۈن ئالاھىدە تەۋسىيە قىلىنىدۇ.",
+                ingredients: ["كەڭ سوزۇلغان چۆپ", "يېڭى پالەك", "قوي گۆشى", "قىزىل مۇچ", "پەمىدۇر", "پىياز"]
+            },
+            {
+                id: 6,
+                page: "1-بەت",
+                category: "laghman",
+                categoryName: "لەغمەنلەر",
+                nameUg: "چىڭسەي لەغمەن",
+                nameTr: "Kereviz Lağmen",
+                time: "15 مىنۇت",
+                flavor: "چۈرۈك ۋە خۇشپۇراق",
+                image: "page1_dish_06.png",
+                desc1: "چىڭسەي لەغمەن چۈرۈك كەرەپشە (چىڭسەي) غولى ۋە يۇمشاق گۆش ياپراقچىلىرىدىن تەييارلانغان بولۇپ، ئۇيغۇر ئاشخانىلىرىدا ئەڭ كۆپ بۇيرۇتۇلىدىغان لەغمەنلەرنىڭ بىرىدۇر. چىڭسەينىڭ تەبىئىي خۇشپۇرىقى گۆشنىڭ مەززىلىك تەمىنى تېخىمۇ گەۋدىلەندۈرىدۇ.",
+                desc2: "ئوتتۇراھال قىيامى ۋە يېڭى كۆكتاتلارنىڭ چۈرۈكلۈكى بىلەن ھەر قانداق پەسىلدە يېيىشكە باب كېلىدىغان، تەمى تەڭپۇڭ ۋە سىڭىشلىك تائامدۇر.",
+                ingredients: ["لەغمەن چۆپى", "يېڭى چىڭسەي (كەرەپشە)", "قوي گۆشى", "پەمىدۇر", "سامساق", "كۆك مۇچ"]
+            },
+            {
+                id: 7,
+                page: "1-بەت",
+                category: "somen",
+                categoryName: "سومەن ۋە چۆپلەر",
+                nameUg: "گەنسىيەن سومەن",
+                nameTr: "Kuru Acılı Kavrulmuş Makarna",
+                time: "15 - 20 مىنۇت",
+                flavor: "قۇرۇق ئاچچىق / قورۇلغان",
+                image: "page1_dish_07.png",
+                desc1: "گەنسىيەن سومەن (قۇرۇق ئاچچىق قورۇلغان سومەن) قۇرۇتۇلغان قىزىل لازا، گۆش ۋە كۆكتاتلار بىلەن كېسىلگەن لەغمەن چۆپىنى كۈچلۈك ئوتتا بىللە قورۇپ پىشۇرىدىغان ئالاھىدە تائامدۇر. قازان تەمى ۋە قۇرۇق لازىنىڭ مەززىلىك ئاچچىق پۇرىقى چۆپنىڭ ئىچىگە تولۇق سىڭىپ كېتىدۇ.",
+                desc2: "ئاچچىق ۋە خۇشپۇراق تاماققا ئامراق مېھمانلار ئۈچۈن مەخسۇس تەييارلىنىدىغان بولۇپ، ھەربىر تال سومەن پارقىراق، يۇمشاق ھەم چاينايمىلىق ھالەتتە داستىخانغا كەلتۈرۈلىدۇ.",
+                ingredients: ["توغرالغان سومەن چۆپى", "قوي گۆشى", "قۇرۇق قىزىل لازا", "پىياز", "كۆك مۇچ", "سامساق"]
+            },
+            {
+                id: 8,
+                page: "1-بەت",
+                category: "somen",
+                categoryName: "سومەن ۋە چۆپلەر",
+                nameUg: "مەلپەر سومەن",
+                nameTr: "Yaprak Kavrulmuş Makarna",
+                time: "15 - 20 مىنۇت",
+                flavor: "ياپراقچە خېمىر / قورۇلغان",
+                image: "page1_dish_08.png",
+                desc1: "مەلپەر سومەن نېپىز ياپراق شەكلىدە ئۈزۈلگەن خېمىر پارچىلىرىنى يېڭى قوي گۆشى، پەمىدۇر ۋە كۆكتات قورۇمىسى بىلەن قوشۇپ قورۇيدىغان ئەنئەنىۋى تائامدۇر. ياپراقچە خېمىرلار قورۇمىنىڭ مەززىلىك شىرنىسىنى ئۆزىگە تولۇق سۈمۈرۈۋالىدۇ.",
+                desc2: "رەڭگى قىزغۇچ، تەمى قويۇق ۋە يېيىشلىك بولۇپ، ئادەتتىكى ئۇزۇن چۆپ ياكى ئۇششاق سومەندىن پەرقلىق بولغان ئۆزگىچە يېيىش ھۇزۇرى بېغىشلايدۇ.",
+                ingredients: ["ياپراقچە خېمىر (مەلپەر)", "قوي گۆشى", "پەمىدۇر قىيامى", "كۆك-قىزىل مۇچ", "پىياز", "سامساق"]
+            },
+            {
+                id: 9,
+                page: "1-بەت",
+                category: "somen",
+                categoryName: "سومەن ۋە چۆپلەر",
+                nameUg: "مارجان سومەن",
+                nameTr: "Mercan Kavrulmuş Makarna",
+                time: "15 - 20 مىنۇت",
+                flavor: "ئۇششاق مارجاندەك / قورۇلغان",
+                image: "page1_dish_09.png",
+                desc1: "مارجان سومەن خۇددى مارجان دانىچىلىرىدەك ئۇششاق ۋە رەتلىك توغرالغان لەغمەن چۆپىنى گۆش قىيمىسى، پەمىدۇر ۋە رەڭگارەڭ مۇچلار بىلەن قورۇپ تەييارلايدىغان نەپىس تائامدۇر. قوشۇق بىلەن يېيىشكە ئىنتايىن ئەپلىك بولۇپ، چۆپ دانىچىلىرى ئېغىزدا يۇمشاق تېگىدۇ.",
+                desc2: "ئۇششاق توغرالغان خۇرۇچلار بىلەن مارجان سومەن بىردەك گىرەلىشىپ كەتكەن بولۇپ، چوڭلار ۋە بالىلار ئوخشاشلا ياخشى كۆرۈپ يەيدىغان داڭلىق تاماق ھېسابلىنىدۇ.",
+                ingredients: ["مارجان شەكىللىك چۆپ", "توغرالغان قوي گۆشى", "قىزىل-يېشىل مۇچ", "پەمىدۇر", "پىياز", "زىرە"]
+            },
+            {
+                id: 10,
+                page: "1-بەت",
+                category: "somen",
+                categoryName: "سومەن ۋە چۆپلەر",
+                nameUg: "قورۇما چۆپ",
+                nameTr: "Kavrulmuş Makarna",
+                time: "15 - 20 مىنۇت",
+                flavor: "قازان تەملىك قورۇلغان چۆپ",
+                image: "page1_dish_10.png",
+                desc1: "قورۇما چۆپ پىشۇرۇلغان ئۇزۇن لەغمەن چۆپىنى قىزىق قازاندا گۆش، پەمىدۇر، جۈسەي، پىياز ۋە مۇچلار بىلەن بىللە قورۇپ تەييارلىنىدىغان مەززىلىك تائامدۇر. چۆپ بىلەن سەي قازاندا بىرگە قورۇلغاچقا، چۆپنىڭ تەمى تېخىمۇ قويۇق ۋە مەززىلىك بولىدۇ.",
+                desc2: "ئۆزىنىڭ قىزغۇچ رەڭگى ۋە قىزىق قازاندىن چىققان خۇشپۇرىقى بىلەن داڭلىق.",
+                ingredients: ["ئۇزۇن لەغمەن چۆپى", "قوي گۆشى", "پەمىدۇر قىيامى", "جۈسەي", "قىزىل مۇچ", "پىياز"]
+            },
+            {
+                id: 11,
+                page: "1-بەت",
+                category: "roast",
+                categoryName: "پولۇ، كاۋاپ ۋە قورۇمىلار",
+                nameUg: "ئۇيغۇر پولۇسى",
+                nameTr: "Özbek / Uygur Pilavı",
+                time: "10 - 15 مىنۇت",
+                flavor: "مەززىلىك / قۇۋۋەتلىك",
+                image: "page1_dish_11.png",
+                desc1: "ئۇيغۇر پولۇسى ئاشخانىمىزنىڭ پەخىرلىك شاھانە تائامى بولۇپ، تاللانغان ئەلا سۈپەتلىك گۈرۈچ، سېرىق سەۋزە، قوينىڭ يۇمشاق گۆشى ۋە پىياز بىلەن دۈملەپ پىشۇرۇلىدۇ. ھەربىر گۈرۈچ دانىچىسى پارقىراق ۋە گۆش شىرنىسىگە قانغان بولۇپ، ئۈستىگە چوڭ پارچە قوي گۆشى ۋە پۈتۈن سامساق قويۇپ تارتىلىدۇ.",
+                desc2: "سەۋزە سالات ياكى قېتىق بىلەن قوشۇپ يېيىلسە، تەمى تېخىمۇ پەيزى بولىدۇ.",
+                ingredients: ["ئەلا سۈپەتلىك گۈرۈچ", "پارچە قوي گۆشى", "سېرىق ۋە قىزىل سەۋزە", "باش پىياز", "پۈتۈن سامساق", "تەبىئىي زىرە"]
+            },
+            {
+                id: 12,
+                page: "1-بەت",
+                category: "roast",
+                categoryName: "پولۇ، كاۋاپ ۋە قورۇمىلار",
+                nameUg: "داپەنجى (چوڭ تەخسە توخۇ)",
+                nameTr: "Büyük Tabak Tavuk",
+                time: "20 - 25 مىنۇت",
+                flavor: "خۇشپۇراق / ئاچچىق-تاتلىق",
+                image: "page1_dish_12.png",
+                desc1: "چوڭ تەخسە توخۇ قورۇمىسى (داپەنجى) يېڭى توخۇ گۆشى، يۇمشاق ياڭيۇ، كۆك ۋە قىزىل مۇچ ھەمدە خۇشپۇراق دورا-دەرمەكلەر بىلەن قىزىل قىيامدا پىشۇرۇلىدىغان داڭلىق تائامدۇر. توخۇ گۆشى يۇمشاق، ياڭيۇلىرى مەززىلىك شىرنىگە تويۇنغان بولىدۇ.",
+                desc2: "كۆپ كىشىلىك ئولتۇرۇشلار ۋە ئائىلە يىغىلىشلىرىدا ئەڭ كۆپ تاللىنىدىغان تاماقلارنىڭ بىرى.",
+                ingredients: ["يېڭى توخۇ گۆشى", "ياڭيۇ", "كۆك ۋە قىزىل مۇچ", "پىياز ۋە سامساق", "تەبىئىي دورا-دەرمەكلەر"]
+            },
+
+            // ================= 2-بەتتىكى تاماقلار =================
+            {
+                id: 13,
+                page: "2-بەت",
+                category: "soup",
+                categoryName: "سۇيۇق تاماقلار",
+                nameUg: "چۆچۈرە",
+                nameTr: "Çöçüre",
+                time: "12 - 15 مىنۇت",
+                flavor: "سۈزۈك شورپىلىق / يېنىك",
+                image: "page2_dish_01.png",
+                desc1: "چۆچۈرە نېپىز يېيىلغان خېمىر ئىچىگە يېڭى قوي گۆشى ۋە پىياز قىيمىسىنى ئوراپ، قوينىڭ سۆڭەك شورپىسىدا پىشۇرۇلىدىغان نەپىس ئۇيغۇر سۇيۇق تائامىدۇر. يۇمشاق چۆچۈرىلەر سۈزۈك ۋە خۇشپۇراق شورپا ئىچىدە يېشىل يۇمغاقسۈت بىلەن بېزىلىپ تارتىلىدۇ.",
+                desc2: "تەمى يېنىك، ئىسسىق ۋە قۇۋۋەتلىك بولۇپ، ئاشقازاننى راھەتلەندۈرىدىغان ئەڭ ياخشى سۇيۇق تاماق ھېسابلىنىدۇ.",
+                ingredients: ["نېپىز خېمىر", "قوي گۆشى قىيمىسى", "پىياز", "سۆڭەك شورپىسى", "يۇمغاقسۈت", "قارىمۇچ"]
+            },
+            {
+                id: 14,
+                page: "2-بەت",
+                category: "soup",
+                categoryName: "سۇيۇق تاماقلار",
+                nameUg: "سۇيۇقئاش",
+                nameTr: "Suyukaş",
+                time: "12 - 15 مىنۇت",
+                flavor: "كۆكتات ۋە ئۈزمە خېمىرلىق",
+                image: "page2_dish_02.png",
+                desc1: "سۇيۇقئاش قولدا كىچىك-كىچىك ئۈزۈلگەن يۇمشاق خېمىر ياپراقچىلىرى، ئۇششاق توغرالغان قوي گۆشى، ياڭيۇ، چامغۇر ۋە پەمىدۇر بىلەن قاينىتىلغان ئەنئەنىۋى ئائىلە شورپىسىدۇر.",
+                desc2: "قىش ۋە كۈز كۈنلىرىدە بەدەننى ئىسسىتىدىغان، ياز كۈنلىرىدە بولسا يېنىك سىڭىدىغان بۇ تائام مول ۋىتامىن ۋە تەبىئىي تەمگە ئىگە.",
+                ingredients: ["ئۈزمە خېمىر", "قوي گۆشى", "ياڭيۇ ۋە چامغۇر", "پەمىدۇر", "كۆك مۇچ", "يۇمغاقسۈت"]
+            },
+            {
+                id: 15,
+                page: "2-بەت",
+                category: "roast",
+                categoryName: "پولۇ، كاۋاپ ۋە قورۇمىلار",
+                nameUg: "مۇچ توخۇ قورۇمىسى",
+                nameTr: "Biberli Tavuk Kavurması",
+                time: "15 - 20 مىنۇت",
+                flavor: "مۇچلۇق / قىياملىق قورۇما",
+                image: "page2_dish_03.png",
+                desc1: "مۇچ توخۇ قورۇمىسى سۆڭەكسىز يۇمشاق توخۇ گۆشىنى يېڭى يېشىل ۋە قىزىل مۇچ، پىياز ھەمدە مەخسۇس قىيام بىلەن قورۇپ پىشۇرىدىغان مەززىلىك قورۇمىدۇر. توخۇ گۆشى سىرتى قىزارغان، ئىچى يۇمشاق ۋە شىرنىلىك ھالەتتە پىشۇرۇلىدۇ.",
+                desc2: "ئىسسىق ئۇيغۇر نېنى ياكى ئاق گۈرۈچ بىلەن قوشۇپ يېيىشكە ئىنتايىن ماس كېلىدىغان بولۇپ، مۇچنىڭ خۇشپۇرىقى ئىشتىھانى ئاچىدۇ.",
+                ingredients: ["سۆڭەكسىز توخۇ گۆشى", "يېشىل ۋە قىزىل مۇچ", "پىياز", "سامساق", "تەبىئىي قىيام", "زىرە"]
+            },
+            {
+                id: 16,
+                page: "2-بەت",
+                category: "manta",
+                categoryName: "مانتا ۋە گۆشنان",
+                nameUg: "پىتىر مانتا",
+                nameTr: "Pitir Manta",
+                time: "15 - 20 مىنۇت",
+                flavor: "نېپىز خېمىر / شىرنىلىك",
+                image: "page2_dish_04.png",
+                desc1: "پىتىر مانتا بولاقسىز پىتىر خېمىرنى قەغەزدەك نېپىز يېيىپ، ئىچىگە پىچاقتا توغرالغان يېڭى قوي گۆشى، قۇيرۇق يېغى ۋە پىياز قىيمىسىنى تۈگۈپ جىمبىلدە ھوردا پىشۇرۇلىدىغان مەشھۇر ئۇيغۇر تائامىدۇر.",
+                desc2: "پىشقان پىتىر مانتىنىڭ ئىچىدە مەززىلىك گۆش شىرنىسى ساقلىنىپ قالىدىغان بولۇپ، ئۈستىگە قارىمۇچ ياكى لازا يېغى سېپىپ يېيىلسە تەمى ئىنتايىن ئېسىل بولىدۇ.",
+                ingredients: ["نېپىز پىتىر خېمىر", "توغرالغان قوي گۆشى", "قۇيرۇق يېغى", "باش پىياز", "قارىمۇچ", "زىرە"]
+            },
+            {
+                id: 17,
+                page: "2-بەت",
+                category: "manta",
+                categoryName: "مانتا ۋە گۆشنان",
+                nameUg: "بولاق مانتا",
+                nameTr: "Bolak Manta",
+                time: "15 - 20 مىنۇت",
+                flavor: "يۇمشاق بولاق خېمىرلىق",
+                image: "page2_dish_05.png",
+                desc1: "بولاق مانتا ئېچىتىلغان يۇمشاق خېمىرنىڭ ئىچىگە مەززىلىك قوي گۆشى ۋە پىياز قىيمىسىنى ئوراپ، قاسقاندا ھوردا پىشۇرۇلىدىغان پومزەك ۋە يېيىشلىك مانتا تۈرىدۇر. ئاق ۋە يۇمشاق خېمىرى گۆشنىڭ خۇشپۇراق يېغىنى ئۆزىگە سىڭدۈرۈۋالىدۇ.",
+                desc2: "ھورى چىقىپ تۇرغان ئىسسىق بولاق مانتا يۇمشاقلىقى ۋە تويۇملۇق بولۇشى بىلەن ھەممە ياشتىكى مېھمانلارنىڭ ياقتۇرۇشىغا ئېرىشكەن.",
+                ingredients: ["ئېچىتىلغان بولاق خېمىر", "قوي گۆشى قىيمىسى", "پىياز", "قارىمۇچ", "زىرە"]
+            },
+            {
+                id: 18,
+                page: "2-بەت",
+                category: "manta",
+                categoryName: "مانتا ۋە گۆشنان",
+                nameUg: "گۆشنان",
+                nameTr: "Etli Ekmek",
+                time: "20 مىنۇت",
+                flavor: "ئالتۇن رەڭ / چۈرۈك ۋە قىيمىلىق",
+                image: "page2_dish_06.png",
+                desc1: "گۆشنان ئىككى قەۋەت نېپىز خېمىر ئارىسىغا قوي گۆشى قىيمىسى ۋە پىيازنى تەكشى يېيىپ، سىرتى ئالتۇن سېرىق ۋە چۈرۈك بولغۇچە پىشۇرۇلىدىغان ئەنئەنىۋى ئۇيغۇر تائامىدۇر.",
+                desc2: "پىشقاندىن كېيىن ئۈچبۇلۇڭ شەكىلدە رەتلىك كېسىلىپ داستىخانغا كەلتۈرۈلىدۇ. سىرتى چۈرۈك، ئىچى يۇمشاق ۋە شىرنىلىك بولۇپ، ئىسسىق چاي بىلەن يېيىشكە ئەڭ باب كېلىدۇ.",
+                ingredients: ["پىتىر خېمىر", "ئىنچىكە توغرالغان قوي گۆشى", "پىياز", "قارىمۇچ", "زىرە"]
+            },
+            {
+                id: 19,
+                page: "2-بەت",
+                category: "side",
+                categoryName: "سالات، نان ۋە چاي",
+                nameUg: "سەۋزە سالات",
+                nameTr: "Havuç Salatası",
+                time: "5 مىنۇت",
+                flavor: "چۈرۈك / ئاچچىق-چۈچۈك",
+                image: "page2_dish_07.png",
+                desc1: "سەۋزە سالات ئىنچىكە قەلەمچە قىلىپ توغرالغان يېڭى سەۋزىنى سامساق، تەبىئىي سىركە، لازا يېغى ۋە كۆكتاتلار بىلەن تەڭشەپ تەييارلانغان ئىشتىھا ئاچقۇچى سوغۇق سەيدۇر.",
+                desc2: "پولۇ، كاۋاپ، مانتا ۋە گۆشنان قاتارلىق گۆشلۈك تاماقلارنىڭ يېنىدا قوشۇمچە يېيىلسە، ياغلىق تۇيغۇنى پەسەيتىپ، ھەزىم قىلىشقا ياردەم بېرىدۇ.",
+                ingredients: ["يېڭى قىزىل-سېرىق سەۋزە", "سامساق", "تەبىئىي سىركە", "خۇشپۇراق لازا يېغى", "يۇمغاقسۈت"]
+            },
+            {
+                id: 20,
+                page: "2-بەت",
+                category: "roast",
+                categoryName: "پولۇ، كاۋاپ ۋە قورۇمىلار",
+                nameUg: "كاۋاپ",
+                nameTr: "Kebap",
+                time: "15 مىنۇت",
+                flavor: "كۆمۈر ئوتىدا پىشقان / زىرىلىك",
+                image: "page2_dish_08.png",
+                desc1: "ئۇيغۇر زىخ كاۋىپى يېڭى قوينىڭ لوق گۆشى ۋە قۇيرۇق يېغىنى نۆۋەت بىلەن زىخقا ئۆتكۈزۈپ، كۆمۈر چوغىدا تەكشى قاقلاپ پىشۇرۇلىدىغان دۇنياغا مەشھۇر تائامدۇر.",
+                desc2: "چوغ ئۈستىدە پىشقان گۆشكە تەبىئىي زىرە، قىزىل لازا ۋە تۇز سېپىلىدىغان بولۇپ، سىرتى چۈرۈك، ئىچى يۇمشاق ۋە شىرنىلىك ھالەتتە ئىسسىق نان بىلەن بىللە تارتىلىدۇ.",
+                ingredients: ["يېڭى قوي گۆشى", "قۇيرۇق يېغى", "تەبىئىي زىرە", "ئۇۋاق قىزىل لازا", "تۇز"]
+            },
+            {
+                id: 21,
+                page: "2-بەت",
+                category: "side",
+                categoryName: "سالات، نان ۋە چاي",
+                nameUg: "راڭپىزا",
+                nameTr: "Hamur Salatası",
+                time: "5 - 10 مىنۇت",
+                flavor: "سالقىن / ئاچچىق-چۈچۈك",
+                image: "page2_dish_09.png",
+                desc1: "راڭپىزا بۇغداي ئۇنىنىڭ كىراخمال سۈيىنى دۈملەپ پىشۇرۇش ئارقىلىق ياسالغان سىلىق، سۈزۈك ۋە ئېلاستىك تاسما شەكىللىك سوغۇق تائامدۇر. ئۈستىگە مەخسۇس قورۇلغان خۇشپۇراق لازا قىيامى، سامساق سۈيى ۋە سىركە قۇيۇپ تەييارلىنىدۇ.",
+                desc2: "ئاچچىق-چۈچۈك ۋە سالقىن تەمى بىلەن ئىشتىھانى شۇئان ئاچىدىغان بولۇپ، لەغمەن ۋە پولۇلارنىڭ ئەڭ ياخشى ھەمراھىدۇر.",
+                ingredients: ["قولدا ياسالغان راڭپىزا", "مەخسۇس لازا قىيامى", "سامساق سۈيى", "تەبىئىي سىركە", "تەرخەمەك ۋە چىڭسەي"]
+            },
+            {
+                id: 22,
+                page: "2-بەت",
+                category: "soup",
+                categoryName: "سۇيۇق تاماقلار",
+                nameUg: "قوي پاقالچىقى",
+                nameTr: "Kuzu Paçası",
+                time: "15 مىنۇت",
+                flavor: "قۇۋۋەتلىك / كوللاگېنغا باي",
+                image: "page2_dish_10.png",
+                desc1: "قوي پاقالچىقى پاكىز تازىلانغان يېڭى قوينىڭ پاقالچاقلىرىنى تەبىئىي دورا-دەرمەكلەر بىلەن نەچچە سائەت مەھكەم ئوتتا قاينىتىپ، يىلىك ۋە پەيلىرى يۇمشاپ پىشقىچە دۈملىنىدىغان قۇۋۋەت تائامىدۇر.",
+                desc2: "تەركىبىدە مول تەبىئىي كوللاگېن ۋە كالتسىي بار بولۇپ، بەدەننى قۇۋۋەتلەيدىغان ۋە بوغۇملارغا پايدىلىق ئەنئەنىۋى شىپالىق تاماق ھېسابلىنىدۇ.",
+                ingredients: ["قوي پاقالچىقى", "قوي شورپىسى", "پىياز", "سامساق", "قارىمۇچ ۋە زەنجىۋىل"]
+            },
+            {
+                id: 23,
+                page: "2-بەت",
+                category: "side",
+                categoryName: "سالات، نان ۋە چاي",
+                nameUg: "نان (ئۇيغۇر نېنى)",
+                nameTr: "Uygur Ekmeği",
+                time: "تەييار / ئىسسىق",
+                flavor: "تونۇردا پىشقان / خۇشپۇراق",
+                image: "page2_dish_11.png",
+                desc1: "ئۇيغۇر نېنى ئۇيغۇر داستىخىنىنىڭ ئۇل تېشى بولۇپ، تاللانغان بۇغداي ئۇنى، سۈت ۋە كۈنجۈت بىلەن يۇغۇرۇلۇپ، قىزىق تونۇردا ئالتۇن رەڭدە قىزارتىپ يېپىلىدۇ.",
+                desc2: "تېشى چۈرۈك، ئىچى يۇمشاق بولغان ئىسسىق ناننى كاۋاپ، قورۇما، شورپا ياكى ئەتگەن چاي بىلەن قوشۇپ يېسىڭىز ئۆزگىچە لەززەت بېغىشلايدۇ.",
+                ingredients: ["ئەلا سۈپەتلىك بۇغداي ئۇنى", "سۈت", "كۈنجۈت ۋە سىيادان", "تۇز", "ئېچىتقۇ"]
+            },
+            {
+                id: 24,
+                page: "2-بەت",
+                category: "side",
+                categoryName: "سالات، نان ۋە چاي",
+                nameUg: "ئەتگەن چاي",
+                nameTr: "Sütlü Çay",
+                time: "5 - 10 مىنۇت",
+                flavor: "قايماقلىق / سۈتلۈك چاي",
+                image: "page2_dish_12.png",
+                desc1: "ئەتگەن چاي خۇشپۇراق قارا چاينى ساپ سۈت ۋە ئازراق تۇز بىلەن قاينىتىپ تەييارلىنىدىغان ئەنئەنىۋى ئۇيغۇر سۈتلۈك چېيىدۇر. ئىسسىق چىنىدە قايماق بىلەن تارتىلىدىغان بۇ چاي تاماقنىڭ سىڭىشىگە ياردەم بېرىدۇ.",
+                desc2: "تۈركىستان ئاشخانىسىنىڭ تونۇر نېنى ياكى گۆشنانلىرى بىلەن قوشۇپ ئىچىلسە، كىشىگە ئارامبەخش ھوزۇر ۋە قۇۋۋەت بېغىشلايدۇ.",
+                ingredients: ["پىششىق قارا چاي", "ساپ يېڭى سۈت", "ئۆزگىچە قايماق", "تەبىئىي تۇز"]
+            }
+        ];
+
+        /* ==========================================================================
+           ئېلېمېنتلار ۋە كۆرۈنمە يۈز كونتروللىغۇچىسى
+           ========================================================================== */
+        const menuGrid = document.getElementById('menuGrid');
+        const categoryTabs = document.getElementById('categoryTabs');
+        const desktopSearch = document.getElementById('desktopSearch');
+        const mobileSearch = document.getElementById('mobileSearch');
+        const themeToggle = document.getElementById('themeToggle');
+        const dishModal = document.getElementById('dishModal');
+        const closeModal = document.getElementById('closeModal');
+
+        let currentCategory = 'all';
+        let searchQuery = '';
+
+        function renderMenu() {
+            menuGrid.innerHTML = '';
+
+            const filtered = dishesData.filter(dish => {
+                const matchesCat = currentCategory === 'all' || dish.category === currentCategory;
+                const q = searchQuery.trim().toLowerCase();
+                const matchesSearch = !q ||
+                    dish.nameUg.toLowerCase().includes(q) ||
+                    dish.nameTr.toLowerCase().includes(q) ||
+                    dish.categoryName.toLowerCase().includes(q);
+                return matchesCat && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                menuGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 3.5rem; color: var(--text-secondary);">
+                        ئىزدىگەن تاماق تېپىلمىدى، باشقا ھالقىلىق سۆزنى سىناپ بېقىڭ.
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(dish => {
+                const card = document.createElement('article');
+                card.className = 'dish-card';
+                card.setAttribute('tabindex', '0');
+                card.innerHTML = `
+                    <div class="dish-visual">
+                        <span class="page-badge">${dish.page}</span>
+                        <span class="category-tag">${dish.categoryName}</span>
+                        <img src="${dish.image}" alt="${dish.nameUg}" loading="lazy">
+                    </div>
+                    <div class="dish-body">
+                        <div class="dish-names">
+                            <div>
+                                <h3 class="dish-title-ug">${dish.nameUg}</h3>
+                                <div class="dish-title-tr">${dish.nameTr}</div>
+                            </div>
+                        </div>
+                        <p class="dish-excerpt">${dish.desc1}</p>
+                        <div class="dish-footer">
+                            <span>⏱ ${dish.time}</span>
+                            <span class="detail-trigger">تەپسىلاتىنى كۆرۈش ←</span>
+                        </div>
+                    </div>
+                `;
+
+                card.addEventListener('mousemove', e => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+                });
+
+                card.addEventListener('click', () => openDishModal(dish));
+                card.addEventListener('keydown', e => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        openDishModal(dish);
+                    }
+                });
+
+                menuGrid.appendChild(card);
+            });
+        }
+
+        function openDishModal(dish) {
+            document.getElementById('modalImg').src = dish.image;
+            document.getElementById('modalImg').alt = dish.nameUg;
+            document.getElementById('modalTitleUg').textContent = dish.nameUg;
+            document.getElementById('modalTitleTr').textContent = dish.nameTr;
+            document.getElementById('modalTime').textContent = dish.time;
+            document.getElementById('modalFlavor').textContent = dish.flavor;
+            document.getElementById('modalPage').textContent = dish.page;
+            document.getElementById('modalDesc1').textContent = dish.desc1;
+            document.getElementById('modalDesc2').textContent = dish.desc2;
+
+            const ingContainer = document.getElementById('modalIngredients');
+            ingContainer.innerHTML = dish.ingredients
+                .map(item => `<span class="ingredient-pill">✦ ${item}</span>`)
+                .join('');
+
+            dishModal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDishModal() {
+            dishModal.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        closeModal.addEventListener('click', closeDishModal);
+        dishModal.addEventListener('click', e => {
+            if (e.target === dishModal) closeDishModal();
+        });
+        window.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && dishModal.classList.contains('open')) {
+                closeDishModal();
+            }
+        });
+
+        categoryTabs.addEventListener('click', e => {
+            const btn = e.target.closest('.cat-btn');
+            if (!btn) return;
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentCategory = btn.dataset.category;
+            renderMenu();
+        });
+
+        function handleSearch(e) {
+            searchQuery = e.target.value;
+            if (e.target === desktopSearch) mobileSearch.value = searchQuery;
+            if (e.target === mobileSearch) desktopSearch.value = searchQuery;
+            renderMenu();
+        }
+        desktopSearch.addEventListener('input', handleSearch);
+        mobileSearch.addEventListener('input', handleSearch);
+
+        themeToggle.addEventListener('click', () => {
+            const htmlEl = document.documentElement;
+            const current = htmlEl.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            htmlEl.setAttribute('data-theme', next);
+        });
+
+        renderMenu();
+    </script>
+</body>
+</html>
